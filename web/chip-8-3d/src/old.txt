@@ -1,0 +1,61 @@
+const width = 512;
+const height = 512;
+const depth = 100;
+
+const size = width * height;
+const data = new Uint8Array( 4 * size * depth );
+
+for ( let i = 0; i < depth; i ++ ) {
+  const color = new THREE.Color( Math.random(), Math.random(), Math.random() );
+  const r = Math.floor( color.r * 255 );
+  const g = Math.floor( color.g * 255 );
+  const b = Math.floor( color.b * 255 );
+
+  for ( let j = 0; j < size; j ++ ) {
+    const stride = ( i * size + j ) * 4;
+    data[ stride ] = r;
+    data[ stride + 1 ] = g;
+    data[ stride + 2 ] = b;
+    data[ stride + 3 ] = 255;
+  }
+}
+
+const gltfLoader = new GLTFLoader();
+const texture = new THREE.DataArrayTexture( data, width, height, depth );
+texture.needsUpdate = true;
+
+var old_screen = new THREE.Object3D;
+
+
+
+const geometry = new THREE.BoxGeometry( 2, 2, 2 ); 
+const material = new THREE.MeshBasicMaterial( 
+  {
+    color: 0x00ff00,
+    map: texture
+}); 
+
+
+
+const cube = new THREE.Mesh( geometry, material ); 
+cube.translateZ(-10)
+scene.add( cube );
+
+gltfLoader.load(
+  "./models/old_screen.gltf", //monitor inception in scketchfab
+  function(gltf){
+    old_screen = gltf.scene;
+    scene.add(old_screen);
+  }
+);
+old_screen.traverse(
+  function(child){
+    console.log(child.name)
+    if(child instanceof THREE.Mesh && child.name == "white_background"){
+      child.material.map = texture;
+      console.log("changed")
+    }
+  }
+);
+
+

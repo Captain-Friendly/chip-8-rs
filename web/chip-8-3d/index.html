@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="./src/style.css">
+    <title>Computer</title>
+  </head>
+  <body>
+    <div id="overlay">
+			<button id="startButton">Play</button>
+		</div>
+		<div id="container"></div>
+    <video id="video" crossorigin="anonymous" playsinline style="display:none">
+      <source src="/videos/deep_note.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+    </video>
+    <script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
