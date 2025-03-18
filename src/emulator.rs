@@ -1,6 +1,7 @@
 use std::sync::{Mutex, OnceLock};
 
 use log::error;
+use wasm_bindgen::prelude::wasm_bindgen;
 use web_sys::js_sys::Math::random;
 
 use crate::ui;
@@ -18,72 +19,83 @@ pub fn get_program() -> &'static Mutex<Program> {
     PROGRAM.get_or_init(|| Mutex::new(Program::new()))
 }
 
+#[wasm_bindgen]
 pub struct Program {
-    pub memory: [u8; 4096],
-    pub display: [u8; DISPLAY_WIDTH as usize * DISPLAY_HEIGHT as usize * RGBA as usize],
+    memory: Vec<u8>,
+    display: Vec<u8>,
     pub program_counter: u16,
     pub index_register: u16,
-    pub call_stack: Vec<u16>,
+    call_stack: Vec<u16>,
     pub delay_timer: u8,
     pub sound_timer: u8,
-    pub variable_regsiters: [u8; 16],
-    pub op_table: [OpCodeFn; 0xF + 1],
-    pub f_op_table: [OpCodeFn; 0x65 + 1],
+    variable_regsiters: Vec<u8>,
+    op_table: Vec<OpCodeFn>,
+    f_op_table: Vec<OpCodeFn>,
     pub pressed_keys: u16, // each bit tells if the key is pressed
 }
 
 type OpCodeFn = fn(program: &mut Program, instruction: u16);
 
+#[wasm_bindgen]
 impl Program {
-    const START_ADDRESS: u16 = 0x200;
-    const FONT_START_ADDR: usize = 0x050;
-    fn new() -> Self {
+
+    pub fn get_font_address() -> usize {
+    return 0x050;
+    }
+
+    pub fn get_start_address() -> u16 {
+        return 0x200;
+        const FONT_START_ADDR: usize = 0x050;
+    }
+    
+    pub fn new() -> Self {
         const NULL_OP: OpCodeFn = |_, __| {};
         let mut p = Self {
-            memory: [0; 4096],
-            display: [0; 8192],
-            program_counter: Self::START_ADDRESS,
+            memory: vec![0; 4096],
+            display: vec![0; 8192],
+            program_counter: Self::get_start_address(),
             index_register: 0,
             call_stack: Vec::new(),
             delay_timer: 0,
             sound_timer: 0,
-            variable_regsiters: [0; 16],
-            op_table: [NULL_OP; 0xF + 1],
-            f_op_table: [NULL_OP; 0x65 + 1],
+            variable_regsiters: vec![0; 16],
+            op_table: vec![NULL_OP; 0xF + 1],
+            f_op_table: vec![NULL_OP; 0x65 + 1],
             pressed_keys: 0,
         };
         p.clear_display();
         p.set_font();
         p.set_instruction_table();
+        p.load_rom(include_bytes!("../roms/octojam9title.ch8"));
         p
     }
 
     pub fn reset(&mut self) {
         self.clear_display();
-        self.program_counter = Self::START_ADDRESS;
+        self.program_counter = Self::get_start_address();
         self.index_register = 0;
         self.call_stack.clear();
         self.delay_timer = 0;
         self.sound_timer = 0;
-        self.variable_regsiters = [0; 16];
+        self.variable_regsiters = vec![0; 16];
         self.pressed_keys = 0;
     }
 
     pub fn load_rom(&mut self, rom: &[u8]) {
         self.reset();
         for (i, value) in rom.iter().enumerate() {
-            self.memory[i + Self::START_ADDRESS as usize] = *value;
+            self.memory[i + Self::get_start_address() as usize] = *value;
         }
     }
 
     pub fn timer_tick(&mut self) {
         self.delay_timer = self.delay_timer.saturating_sub(1);
         self.sound_timer = self.sound_timer.saturating_sub(1);
-        if self.sound_timer != 0 {
-            ui::beep();
-        } else {
-            ui::stop_beep();
-        }
+        // if self.sound_timer != 0 {
+        //     ui::beep();
+        // } else {
+        //     ui::stop_beep();
+        // }
     }
 
     pub fn tick(&mut self) {
@@ -107,8 +119,8 @@ impl Program {
         ((self.pressed_keys >> key) & 0b1) == 1
     }
 
-    pub fn get_display(&self) -> Vec<u8> {
-        self.display.into()
+    pub fn get_display(&self) -> *const u8 {
+        self.display.as_ptr()
     }
 
     pub fn width() -> u8 {
@@ -142,7 +154,7 @@ impl Program {
             0xF, 0x8, 0xF, 0x8, 0x8, // F
         ];
         for (i, value) in CHARACTER_FONTS.iter().enumerate() {
-            self.memory[i + Self::FONT_START_ADDR] = *value;
+            self.memory[i + Self::get_font_address()] = *value;
         }
     }
 
@@ -452,7 +464,7 @@ impl Program {
     fn op_FX29(program: &mut Program, register_name: u16) {
         let hex = program.variable_regsiters[register_name as usize] & 0x0F;
         program.index_register =
-            program.memory[Self::FONT_START_ADDR + ((hex * 5) as usize)] as u16;
+            program.memory[Self::get_font_address() + ((hex * 5) as usize)] as u16;
     }
     #[allow(non_snake_case)]
     fn op_FX33(program: &mut Program, register_name: u16) {

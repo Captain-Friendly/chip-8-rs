@@ -13,16 +13,16 @@ pub static RENDER_DEBUGGER: Mutex<bool> = Mutex::new(false);
 pub static BREAKPOINTS: Mutex<Vec<usize>> = Mutex::new(Vec::new());
 
 pub fn render_debugger(program: &Program) {
-    render_registers(
-        &program.variable_regsiters,
-        &get_element(&document(), "#registers-table"),
-    );
+    // render_registers(
+    //     &program.variable_regsiters,
+    //     &get_element(&document(), "#registers-table"),
+    // );
 
-    render_memory(
-        &program.memory,
-        program.program_counter as usize,
-        &get_element(&document(), "#memory-table"),
-    );
+    // render_memory(
+    //     &program.memory,
+    //     program.program_counter as usize,
+    //     &get_element(&document(), "#memory-table"),
+    // );
 }
 
 fn render_registers(registers: &[u8], table: &HtmlTableElement) {

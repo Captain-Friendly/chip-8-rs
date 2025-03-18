@@ -9,7 +9,7 @@ use std::panic;
 use wasm_bindgen::prelude::wasm_bindgen;
 extern crate console_error_panic_hook;
 
-#[wasm_bindgen(start)]
+#[wasm_bindgen]
 pub fn start() {
     init_console();
     handlers::set_handlers();

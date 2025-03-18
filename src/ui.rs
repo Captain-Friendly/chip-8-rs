@@ -11,16 +11,16 @@ use web_sys::{
 };
 
 pub fn render_emulator(program: &Program, ctx: &CanvasRenderingContext2d) {
-    let width = Program::width() as u32;
+    // let width = Program::width() as u32;
 
-    let data = ImageData::new_with_u8_clamped_array(Clamped(&program.get_display()), width)
-        .expect("Could not create the image data");
+    // let data = ImageData::new_with_u8_clamped_array(Clamped(&program.get_display()), width)
+    //     .expect("Could not create the image data");
 
-    ctx.put_image_data(&data, 0.0, 0.0)
-        .expect("Could not put image data");
-    if *RENDER_DEBUGGER.lock().unwrap() {
-        render_debugger(program);
-    }
+    // ctx.put_image_data(&data, 0.0, 0.0)
+    //     .expect("Could not put image data");
+    // if *RENDER_DEBUGGER.lock().unwrap() {
+    //     render_debugger(program);
+    // }
 }
 
 pub fn get_element<T: JsCast>(document: &Document, id: &str) -> T {
