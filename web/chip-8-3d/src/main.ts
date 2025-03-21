@@ -3,7 +3,6 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import initialzeProgram, {Program} from '../wasm/chip_8.js'
-import { SceneNode } from 'three/webgpu';
 
 // TODO: ✅someohow be able to get keyboard input that looks cool
 // TODO: ✅YOU also need to be able to tell when a key is releasted.
