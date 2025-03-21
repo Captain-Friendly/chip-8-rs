@@ -4,18 +4,24 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import initialzeProgram, {Program} from '../wasm/chip_8.js'
 import { SceneNode } from 'three/webgpu';
-import { getKeyframeOrder } from 'three/src/animation/AnimationUtils.js';
-import { log } from 'three/tsl';
-import { ConvexObjectBreaker } from 'three/examples/jsm/Addons.js';
 
-// TODO: someohow be able to get keyboard input that looks cool
-// YOU also need to be able to tell when a key is releasted.
-// google chip 8 emulator to view the common keys 
-
+// TODO: ✅someohow be able to get keyboard input that looks cool
+// TODO: ✅YOU also need to be able to tell when a key is releasted.
+// TODO: ✅google chip 8 emulator to view the common keys 
+// TODO: ✅ change background 
+// TODO: 🔳
 
 // TODO: make a program selector with all the roms
 
 const scene = new THREE.Scene();
+// scene.background = new THREE.TextureLoader().load("./images/retro_future_background.jpg")
+const video = document.getElementById('video') as HTMLVideoElement;
+video.loop = true;
+const backgroundVideoTexture = new THREE.VideoTexture(video);
+backgroundVideoTexture.needsUpdate = true;
+scene.background = backgroundVideoTexture;
+video.play()
+
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth/ window.innerHeight, 0.1, 10000);
 camera.position.z = 500;
 const renderer = new THREE.WebGLRenderer()
@@ -175,6 +181,8 @@ function init(){
   topLigth2.position.set(-2,1,1).normalize()
   // topLigth.castShadow = true;
   scene.add(topLigth2);
+
+  scene.add(new THREE.AmbientLight("#ffffff",0.5))
   //#endregion
   // scene.add(new THREE.DirectionalLightHelper(topLigth,5))
   // scene.add(new THREE.DirectionalLightHelper(topLigth2,5))
