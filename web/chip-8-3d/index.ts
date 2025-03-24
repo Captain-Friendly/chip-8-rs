@@ -90,7 +90,6 @@ for (let index = 0; index < options.length; index++) {
         program.style.backgroundColor = bkgColorSelected
         programSelected = program;
         nameProgramSelected = options[index];
-        console.log(options[index])
     })
     
     const name = document.createElement('div');

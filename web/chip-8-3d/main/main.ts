@@ -14,8 +14,9 @@ import initialzeProgram, {Program} from '../wasm/chip_8.js'
 
 // TODO: make a program selector with all the roms
 
+console.log(window.sessionStorage.getItem('program'))
 const scene = new THREE.Scene();
-scene.background = new THREE.TextureLoader().load("../images/background_image.jpg")
+scene.background = new THREE.TextureLoader().load("../images/80s-background.jpg")
 // const video = document.getElementById('video') as HTMLVideoElement;
 // video.loop = true;
 // const backgroundVideoTexture = new THREE.VideoTexture(video);
