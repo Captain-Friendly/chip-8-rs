@@ -1,30 +1,101 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link type="text/css" rel="stylesheet" href="./src/style.css">
-    <title>Computer</title>
-  </head>
-  <body>
-    <div id="overlay">
-			<button id="startButton">Play</button>
-		</div>
-		<div id="container"></div>
-    <video id="video" crossorigin="anonymous" playsinline style="display:none">
-      <!-- <source src="/videos/deep_note.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'> -->
-      <source src="/videos/retro_loop.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'> 
-      <!-- notjungcg on vecteezy -->
-    </video>
-    <script type="importmap">
-			{
-				"imports": {
-					"three": "../build/three.module.js",
-					"three/addons/": "./jsm/"
-				}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Emulator Selector</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="./src/style.css">
+		<style>
+			a {
+				color: #8ff;
 			}
+
+			#menu {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.program {
+				width: 600px;
+				height: 160px;
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				border: 1px solid rgba(182, 0, 149, 0.25);
+				font-family: Helvetica, sans-serif;
+				text-align: center;
+				line-height: normal;
+				cursor: default;
+			}
+
+			.program:hover {
+				box-shadow: 0px 0px 50px rgba(0,255,255,0.75);
+				border: 10px solid rgba(127,255,255,0.75);
+				
+			}
+			.program:hover  .name {
+				font-weight:bolder;
+				
+			}
+
+				.program .name {
+					position: absolute;
+					top: 40px;
+					left: 0px;
+					right: 0px;
+					font-size: 60px;
+					font-weight: bold;
+					color: rgba(255,255,255,0.75);
+					text-shadow: 0 0 10px rgba(0,255,255,0.95);
+				}
+
+				.program .details {
+					position: absolute;
+					bottom: 15px;
+					left: 0px;
+					right: 0px;
+					font-size: 12px;
+					color: rgba(127,255,255,0.75);
+				}
+
+			.goBtn {
+				width: 500px;
+				height: 200px;
+				color: rgba(127,255,255,0.75);
+				background: transparent;
+				outline: 10px solid rgba(127,255,255,0.75);
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+			.goBtn .name {
+				position: absolute;
+				top: 90px;
+				left: 30px;
+				right: 0px;
+				font-size: 60px;
+				font-weight: bold;
+				color: rgb(255, 255, 255);
+				text-shadow: 0 0 10px rgba(0,255,255,0.95);
+			}
+
+			.goBtn:hover {
+				background-color: rgba(0,255,255,0.5);
+			}
+
+			.goBtn:active {
+				color: #000000;
+				background-color: rgba(0,255,255,0.75);
+			}
+		</style>
+	</head>
+	<body>
+
+		<div id="container"></div>
+
+		<script type="module" src="./index.ts">
+
+			
 		</script>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+	</body>
 </html>

@@ -1,9 +1,9 @@
-import './style.css'
+// import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+// import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+// import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import initialzeProgram, {Program} from '../wasm/chip_8.js'
 
 // TODO: ✅someohow be able to get keyboard input that looks cool
@@ -15,21 +15,21 @@ import initialzeProgram, {Program} from '../wasm/chip_8.js'
 // TODO: make a program selector with all the roms
 
 const scene = new THREE.Scene();
-// scene.background = new THREE.TextureLoader().load("./images/retro_future_background.jpg")
-const video = document.getElementById('video') as HTMLVideoElement;
-video.loop = true;
-const backgroundVideoTexture = new THREE.VideoTexture(video);
-backgroundVideoTexture.needsUpdate = true;
-scene.background = backgroundVideoTexture;
-video.play()
+scene.background = new THREE.TextureLoader().load("../images/background_image.jpg")
+// const video = document.getElementById('video') as HTMLVideoElement;
+// video.loop = true;
+// const backgroundVideoTexture = new THREE.VideoTexture(video);
+// backgroundVideoTexture.needsUpdate = true;
+// scene.background = backgroundVideoTexture;
+// video.play()
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth/ window.innerHeight, 0.1, 10000);
 camera.position.z = 500;
 const renderer = new THREE.WebGLRenderer()
 const controls = new OrbitControls(camera, renderer.domElement)
+controls.update();
 camera.position.setZ(10);
 const gltfLoader = new GLTFLoader();
-controls.update();
 const yValueOfScreen = 1.28;
 const emulatorData = await initialzeProgram();
 const emulator = Program.new();
@@ -59,7 +59,7 @@ for ( let i = 0; i < size; i ++ ) {
 
 //monitor
 gltfLoader.load(
-  "./models/old_screen.gltf", //monitor inception in scketchfab
+  "../models/old_screen.gltf", //monitor inception in scketchfab
   function(gltf){
     gltf.scene.children.forEach((child)=> {
       if(child.name == 'Monitor_inception'){
@@ -72,7 +72,7 @@ gltfLoader.load(
 
 // screen
 // const video = document.getElementById('video') as HTMLVideoElement;
-gltfLoader.load("./models/old_screen.gltf", 
+gltfLoader.load("../models/old_screen.gltf", 
   function(gltf){
     gltf.scene.children.forEach((child)=>{
       if(child instanceof THREE.Mesh){
@@ -100,7 +100,7 @@ gltfLoader.load("./models/old_screen.gltf",
 //keyboard
 
 //PAD
-gltfLoader.load("./models/keyboard.gltf", 
+gltfLoader.load("../models/keyboard.gltf", 
   function(gltf){
     // gltf.scene.scale.set(1,1,1)
     // gltf.scene.position.z = 3.5;
@@ -130,7 +130,7 @@ let isKeyPresent: number[] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
 for (let index = 0; index < nameOfKeys.length; index++) {
   const keyName = nameOfKeys[index];
-  gltfLoader.load("./models/keyboard.gltf", 
+  gltfLoader.load("../models/keyboard.gltf", 
     function(gltf){
       gltf.scene.children.forEach(
         (child)=>{
