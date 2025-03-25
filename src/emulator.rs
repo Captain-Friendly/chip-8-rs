@@ -8,8 +8,8 @@ use crate::ui;
 
 const DISPLAY_WIDTH: u8 = 64;
 const DISPLAY_HEIGHT: u8 = 32;
-const ON_COLOR: [u8; 4] = Program::hex_to_rgba(0x1d2021ff);
-const OFF_COLOR: [u8; 4] = Program::hex_to_rgba(0xfabd2fff);
+const ON_COLOR: [u8; 4] = Program::hex_to_rgba(0xff);
+const OFF_COLOR: [u8; 4] = Program::hex_to_rgba(0xffffffff);
 const RGBA: u8 = 4;
 
 pub fn get_program() -> &'static Mutex<Program> {
@@ -66,7 +66,6 @@ impl Program {
         p.clear_display();
         p.set_font();
         p.set_instruction_table();
-        p.load_rom(include_bytes!("../roms/octojam9title.ch8"));
         p
     }
 

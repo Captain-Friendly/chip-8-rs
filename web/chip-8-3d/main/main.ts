@@ -13,8 +13,7 @@ import initialzeProgram, {Program} from '../wasm/chip_8.js'
 // TODO: 🔳
 
 // TODO: make a program selector with all the roms
-
-console.log(window.sessionStorage.getItem('program'))
+console.log()
 const scene = new THREE.Scene();
 scene.background = new THREE.TextureLoader().load("../images/80s-background.jpg")
 // const video = document.getElementById('video') as HTMLVideoElement;
@@ -25,7 +24,7 @@ scene.background = new THREE.TextureLoader().load("../images/80s-background.jpg"
 // video.play()
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth/ window.innerHeight, 0.1, 10000);
-camera.position.z = 500;
+camera.position.y = -1;
 const renderer = new THREE.WebGLRenderer()
 const controls = new OrbitControls(camera, renderer.domElement)
 controls.update();
@@ -34,6 +33,16 @@ const gltfLoader = new GLTFLoader();
 const yValueOfScreen = 1.28;
 const emulatorData = await initialzeProgram();
 const emulator = Program.new();
+const programName = window.sessionStorage.getItem('program');
+let programData = await fetch(`roms/${programName}.ch8`, {
+  headers: {
+    "Accept": "application/octet-stream"
+  }
+}).then((response) => 
+  response.arrayBuffer()
+)
+const romData = new Uint8Array(programData);
+emulator.load_rom(romData)
 
 
 //#region DataTexture
@@ -204,7 +213,7 @@ function init(){
 
   // video.play()
 
-  camera.lookAt(scene.position)
+  // camera.lookAt(scene.position)
   renderer.autoClear =false
   changeTexture()
 }
@@ -213,7 +222,7 @@ function init(){
 function animate(){
   requestAnimationFrame(animate)
   controls.update()
-  renderer.clear()
+  // renderer.clear()
   renderer.render(scene, camera)
 }
 

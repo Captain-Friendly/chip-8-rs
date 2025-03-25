@@ -62,7 +62,7 @@ const options:string[] = [
 
 
 let programSelected:HTMLDivElement;
-let nameProgramSelected:string;
+let nameProgramSelected:string = "";
 let objects: CSS3DObject[] = [];
 
 let renderer = new CSS3DRenderer();
@@ -76,8 +76,8 @@ controls.minDistance = 800;
 controls.maxDistance = 10000;
 controls.addEventListener( 'change', render );
 
-const bkgColor = 'rgba(196, 1, 255, 0.47)';
-const bkgColorSelected = "rgb(185, 26, 221)"
+const bkgColorSelected = '#ffbe0b';
+const bkgColor = "#ff5100e5"
 
 for (let index = 0; index < options.length; index++) {
     const program = document.createElement('div');
@@ -128,9 +128,17 @@ btnTxt.className = 'name';
 btnTxt.textContent = "Go To Emulator";
 goBtn.appendChild(btnTxt);
 goBtn.addEventListener('pointerdown',()=>{
-    window.sessionStorage.setItem("program",nameProgramSelected);
-    window.location.href = '/main/index.html'
-
+    if(nameProgramSelected != ""){
+        console.log(nameProgramSelected)
+        window.sessionStorage.setItem("program",nameProgramSelected);
+        window.location.href = '/main/index.html'
+    }
+    btnTxt.textContent = "Nothing \nselected";
+    btnTxt.style.fontSize = '50px'
+    window.setTimeout(()=>{ 
+        btnTxt.textContent = "Go To Emulator";
+        btnTxt.style.fontSize = '60px'
+    },800)
 })
 const goBtn3D = new CSS3DObject(goBtn);
 goBtn3D.position.z = 0;
