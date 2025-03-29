@@ -263,6 +263,7 @@ window.addEventListener('keydown',
       const numberName = "number"+KeyboardEvent.key;
       const letterName = "letter"+KeyboardEvent.key.toUpperCase();
       if(nameOfKeys.includes(numberName) || nameOfKeys.includes(letterName)){
+        emulator.set_key_down(Number("0x"+KeyboardEvent.key))
         scene.children.forEach((child)=>{
           if(child.name == numberName|| child.name == letterName){
             child.position.z -= zMovementKey;
@@ -278,6 +279,7 @@ window.addEventListener('keyup',
     const numberName = "number"+KeyboardEvent.key;
     const letterName = "letter"+KeyboardEvent.key.toUpperCase();
     if(nameOfKeys.includes(numberName) || nameOfKeys.includes(letterName)){
+      emulator.set_key_up(Number("0x"+KeyboardEvent.key))
       scene.children.forEach((child)=>{
         if(child.name == numberName|| child.name == letterName){
           child.position.z += zMovementKey;

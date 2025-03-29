@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
-import { uniform } from 'three/tsl';
 
 const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
 camera.position.z = 3000;
